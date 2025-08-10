@@ -1,0 +1,123 @@
+Advanced Sampling Plan Analyzer & OC Curve Simulator - Product Introduction
+
+Are you tired of relying on paper-based lookup tables without understanding the underlying sampling risks? Do you wish you could intuitively compare different sampling plans to find the most economical and scientific acceptance criteria for your products?
+
+The Advanced Sampling Plan Analyzer & OC Curve Simulator is an interactive web-based tool designed for quality professionals. It transforms complex statistical principles into an intuitive, graphical interface, empowering you to not only "know what" but also "know why."
+
+Key Advantages & Benefits:
+
+Visualize Your Risk:
+Through instantly generated Operating Characteristic (OC) Curves, you can see the "personality" of any sampling plan (defined by sample size n and acceptance number c). Intuitively understand the probability of accepting a lot (Pa) at different incoming defect rates (p), giving you a clear view of both Producer's Risk (α) and Consumer's Risk (β).
+
+Compare Multiple Plans Simultaneously:
+No more switching between different charts or documents. This tool allows you to add multiple sampling plans and plot their OC curves on the same graph. Which plan is stricter? Which offers better discrimination? The answers are immediately clear.
+
+Simulate Three Core Probability Models:
+Dive deep into the statistical core of sampling plans. The tool simulates and compares three fundamental probability distributions:
+
+Hypergeometric: The most precise model, ideal for finite lot sampling.
+
+Binomial: The most common approximation, suitable for large lots or continuous production streams.
+
+Poisson: An excellent simplification for large sample sizes and low defect rates, forming the core of standards like ISO 2859-1.
+
+Intelligent Reverse Query:
+Think outside the box! You are no longer limited to deriving risk from a plan. Now, you can work backward from your desired quality level to find the most suitable sampling plan. Simply input three of the four key parameters—Lot Size (N), Acceptance Number (c), and desired AQL—and the system will automatically calculate the optimal Sample Size (n).
+
+Built-in ANSI/ASQ Z1.4 & C=0 Sampling Plan Lookup Tools:
+Industry standards are seamlessly integrated. The tool includes:
+
+ANSI/ASQ Z1.4 (MIL-STD-105E) Lookup Tool: Quickly find sampling plans for Normal, Tightened, and Reduced inspection levels. With a single click, export the results to the multi-plan comparison panel for in-depth OC curve analysis.
+
+C=0 Sampling Plan Lookup Tool: Designed for zero-acceptance criteria, this tool helps you find the required sample size and analyze its associated consumer risk (LTPD).
+
+One-Click Export for Easy Reporting:
+All analytical charts and data are exportable. Save your insightful OC curve charts as PNG images or export the detailed data points as a CSV file, making it effortless to create reports, conduct academic research, or communicate with your team.
+
+User Manual
+
+This tool is organized into five main functional modes, which you can switch between using the tabs at the top of the page.
+
+Mode 1: Acceptance Probability Distribution
+
+Purpose: To understand and compare the performance of a single sampling plan under different statistical models.
+
+Instructions:
+
+In the left "Control Panel," enter the Lot Size (N), Sample Size (n), and Acceptance No. (c).
+
+Adjust the "Defect Rate Max (%)" to set the range of the chart's X-axis.
+
+Under "Show Distribution Curves," check the boxes for the probability models you wish to view (Hypergeometric, Binomial, Poisson).
+
+The OC curves will instantly appear in the chart area on the right. Hover your mouse over any curve to see the specific defect rate and acceptance probability at that point.
+
+Click the "Sampling Plan Theory" button to read a detailed explanation of the underlying principles.
+
+Mode 2: Multiple Plan Comparison
+
+Purpose: To compare the OC curves of several different sampling plans on a single graph.
+
+Instructions:
+
+In the "1. Add Plan" section on the left, enter a Sample Size (n) and an Acceptance No. (c).
+
+Optionally, enter an AQL (%) to have it marked on the chart.
+
+Optionally, assign a Plan Label for easy identification.
+
+Click the "Add Plan" button. The plan's OC curve will be added to the chart.
+
+Repeat steps 1-4 to add more plans for comparison.
+
+The "2. Added Plans" list shows all active plans. Click the × button next to any plan to remove it.
+
+Click "Clear All" to remove all plans from the chart.
+
+Mode 3: Reverse Sampling Query
+
+Purpose: To reverse-engineer the most suitable sampling plan parameters based on your desired quality levels.
+
+Instructions:
+
+In the "Reverse Sampling Calculation" panel, you will see four main parameters: AQL (%), Acceptance No. (c), Sample Size (n), and Lot Size (N).
+
+Check the boxes for any three parameters that you already know and fill in their values.
+
+The system will automatically calculate the fourth (unchecked) parameter, displaying the two closest plan options (where the probability of acceptance, Pa, is ≈ 95%).
+
+Click the "Plan" button next to a result to highlight its OC curve on the chart.
+
+Mode 4: Sampling Standard
+
+Purpose: To reference ANSI/ASQ Z1.4 standard tables or use the interactive lookup tool.
+
+Instructions:
+
+Click "Code Letters & Master Tables" to browse scanned images of the standard tables using the "Previous" and "Next" buttons.
+
+Click "AQL Plan Table Lookup" to switch to the interactive tool:
+
+First, select the Inspection Type (Normal, Tightened, or Reduced).
+
+Next, use the dropdown menus to select the Lot Size Range, Inspection Level, and AQL.
+
+The system will instantly display the resulting Sample Size (n) and Acceptance No. (c) below.
+
+Click "Export to Plan Comparison" to quickly transfer this result to Mode 2 for a detailed OC curve analysis.
+
+Mode 5: C=0 Sampling Plan
+
+Purpose: To quickly look up zero-acceptance (c=0) sampling plans and understand their associated consumer risk (LTPD).
+
+Instructions:
+
+In the left panel, select the Lot Size Range and AQL (%) from the dropdown menus.
+
+The corresponding Sampling Plan (n, c=0) will be displayed automatically.
+
+The tool also calculates and shows the LTPD (or LQ) for this plan, which is the defect rate corresponding to a 10% consumer's risk (β).
+
+The chart on the right will simultaneously plot the OC curve for this c=0 plan, with the LTPD point clearly marked.
+
+You can also use the "Export to Plan Comparison" button for further analysis.
