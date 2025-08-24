@@ -47,7 +47,7 @@
             min-height: 100vh;
         }
 
-        /* ===== 主卡片區（外層 main-container） ===== */ 
+        /* ===== 主卡片區（外層 main-container） ===== */
         .main-container {
             background: var(--container-bg);
             border-radius: 20px;
@@ -499,16 +499,21 @@
     #aql-lookup-tool .query-controls {
         display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
+        align-items: stretch !important;
         gap: 20px !important;
     }
     #aql-lookup-tool .input-group {
-        width: 260px;
-        align-items: center;
+        width: 100%;
+        align-items: stretch;
     }
     #aql-lookup-tool .input-group select {
         text-align: center;
         text-align-last: center;
+        width: 100%;
+    }
+    #aql-lookup-tool .input-group label {
+        text-align: left;
+        margin-bottom: 8px;
     }
 
     /* AQL查表工具下拉選單區塊的外層背景色 */
@@ -527,6 +532,18 @@
         font-weight: bold;
         font-size: 1.05em;
         /* Firefox 專屬，其他瀏覽器不會有影響 */
+    }
+    /* C=0抽樣計畫下拉選單選項的背景色 */
+    #c0-plan-controls .input-group select option {
+        background: #25364a;
+        color: #fff;
+    }
+    /* C=0抽樣計畫下拉選單 optgroup 標題的背景色與字色 */
+    #c0-plan-controls .input-group select optgroup {
+        background: #1a2636;
+        color: #FFD700;
+        font-weight: bold;
+        font-size: 1.05em;
     }
     </style>
     <style>
@@ -889,52 +906,63 @@
             </div>
             <!-- 新增：AQL查表工具區塊 -->
             <div id="aql-lookup-tool" style="display:none; margin-top:30px;">
-                <div class="main-container" style="max-width:700px; margin:auto; box-shadow:none; padding:20px 10px;">
+                <div class="main-container" style="max-width:1000px; margin:auto; box-shadow:none; padding:20px 10px;">
                     <header><h1 style="font-size:1.5em;">Normal Single Sampling Plan Lookup Tool</h1></header>
-                    <div class="query-controls">
-                        <div class="input-group inspection-type-group">
-                            <label style="margin-right:12px;">Inspection Type:</label>
-                            <button type="button" class="inspection-type-btn btn-styled active" data-type="normal">Normal</button>
-                            <button type="button" class="inspection-type-btn" data-type="tightened">Tightened</button>
-                            <button type="button" class="inspection-type-btn" data-type="reduced">Reduced</button>
-                        </div>
-                        <div class="input-group">
-                            <label for="lot-size-select">1. Select Lot Size Range</label>
-                            <select id="lot-size-select"><option value="">-- Select Lot Size --</option></select>
-                        </div>
-                        <div class="input-group">
-                            <label for="level-select">2. Select Inspection Level</label>
-                            <select id="level-select">
-                                <optgroup label="General Levels">
-                                    <option value="I">I</option><option value="II" selected>II (Most Common)</option><option value="III">III</option>
-                                </optgroup>
-                                <optgroup label="Special Levels">
-                                    <option value="S-1">S-1</option><option value="S-2">S-2</option><option value="S-3">S-3</option><option value="S-4">S-4</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label for="aql-select">3. Select AQL</label>
-                            <select id="aql-select"><option value="">-- Select AQL --</option></select>
-                        </div>
-                    </div>
-                    <div id="result-container" style="display:none; padding:25px; border-radius:15px; margin-top:40px; text-align:center;">
-                        <h2 style="margin:0 0 20px 0; font-size:1.5em;">Query Result</h2>
-                        <div class="result-summary" style="display:flex; justify-content:space-around; text-align:center;">
-                            <div>
-                                <h3 style="margin:0 0 5px 0; font-size:1.1em; font-weight:400; color:rgba(255,255,255,0.7);">Sample Size (n)</h3>
-                                <span id="sample-size-result" style="font-size:2.2em; font-weight:700; color:#2ecc71;"></span>
-                                <span id="original-code-letter" class="small-text" style="font-size:1.2em; color:rgba(255,255,255,0.8);"></span>
+                    <!-- 橫向布局容器 -->
+                    <div style="display:flex; gap:30px; align-items:flex-start;">
+                        <!-- 左側控制區 -->
+                        <div style="flex:1; min-width:350px;">
+                            <!-- 檢查類型按鈕 -->
+                            <div class="input-group inspection-type-group" style="margin-bottom:30px;">
+                                <label style="margin-right:12px;">Inspection Type:</label>
+                                <button type="button" class="inspection-type-btn btn-styled active" data-type="normal">Normal</button>
+                                <button type="button" class="inspection-type-btn" data-type="tightened">Tightened</button>
+                                <button type="button" class="inspection-type-btn" data-type="reduced">Reduced</button>
                             </div>
-                            <div>
-                                <h3 style="margin:0 0 5px 0; font-size:1.1em; font-weight:400; color:rgba(255,255,255,0.7);">Acceptance No. (c)</h3>
-                                <span id="acceptance-number-result" style="font-size:2.2em; font-weight:700; color:#2ecc71;"></span>
+                            <!-- 下拉選單控制項 -->
+                            <div class="query-controls" style="margin-left:120px;">
+                                <div class="input-group">
+                                    <label for="lot-size-select">1. Select Lot Size Range</label>
+                                    <select id="lot-size-select"><option value="">-- Select Lot Size --</option></select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="level-select">2. Select Inspection Level</label>
+                                    <select id="level-select">
+                                        <optgroup label="General Levels">
+                                            <option value="I">I</option><option value="II" selected>II (Most Common)</option><option value="III">III</option>
+                                        </optgroup>
+                                        <optgroup label="Special Levels">
+                                            <option value="S-1">S-1</option><option value="S-2">S-2</option><option value="S-3">S-3</option><option value="S-4">S-4</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="aql-select">3. Select AQL</label>
+                                    <select id="aql-select"><option value="">-- Select AQL --</option></select>
+                                </div>
                             </div>
                         </div>
-                        <div style="margin-top: 24px; text-align: center;">
-                            <!-- [采樣標準/查表工具] 匯出至多計畫比較按鈕 -->
-                            <button id="aql-export-to-plan-btn" class="main-btn" type="button">Export to Plan Comparison</button>
-                            <!-- /[采樣標準/查表工具] -->
+                        <!-- 右側結果區 -->
+                        <div style="flex:1; min-width:350px;">
+                            <div id="result-container" style="display:none; padding:25px; border-radius:15px; text-align:center; margin-top:0;">
+                                <h2 style="margin:0 0 20px 0; font-size:1.5em;">Query Result</h2>
+                                <div class="result-summary" style="display:flex; justify-content:space-around; text-align:center;">
+                                    <div>
+                                        <h3 style="margin:0 0 5px 0; font-size:1.1em; font-weight:400; color:rgba(255,255,255,0.7);">Sample Size (n)</h3>
+                                        <span id="sample-size-result" style="font-size:2.2em; font-weight:700; color:#2ecc71;"></span>
+                                        <span id="original-code-letter" class="small-text" style="font-size:1.2em; color:rgba(255,255,255,0.8);"></span>
+                                    </div>
+                                    <div>
+                                        <h3 style="margin:0 0 5px 0; font-size:1.1em; font-weight:400; color:rgba(255,255,255,0.7);">Acceptance No. (c)</h3>
+                                        <span id="acceptance-number-result" style="font-size:2.2em; font-weight:700; color:#2ecc71;"></span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 24px; text-align: center;">
+                                    <!-- [采樣標準/查表工具] 匯出至多計畫比較按鈕 -->
+                                    <button id="aql-export-to-plan-btn" class="main-btn" type="button">Export to Plan Comparison</button>
+                                    <!-- /[采樣標準/查表工具] -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1392,10 +1420,8 @@
                 contentWrapper.style.display = 'none';
                 kaiyiContainer.style.display = 'none';
                 
-                // 清除所有圖表，除了逆向查詢模式
-                if (newMode !== 'reverse') {
-                    clearReverseOCChart();
-                }
+                // 清除所有圖表，確保模式切換時圖表也相應清除
+                clearReverseOCChart();
 
                 if (newMode === 'distribution') {
                     headerTitle.textContent = 'Acceptance Probability Distribution';
@@ -1420,7 +1446,9 @@
                     chartContainer.style.display = 'block';
                     contentWrapper.style.display = 'flex';
                     updateReverseInputDisabledState();
-                    setTimeout(() => { doReverseQuery(); }, 0);
+                    clearReverseOCChart(); // 確保切換時清空圖表
+                    // 自動觸發查詢以顯示預設值的結果
+                    setTimeout(() => { doReverseQuery(); }, 100);
                 } else if (newMode === 'c0_plan') { // [新增] C=0模式處理
                     headerTitle.textContent = 'C=0 Sampling Plan';
                     headerSubtitle.textContent = 'Zero Acceptance Sampling Plan Query Based on Consumer Risk';
@@ -1539,6 +1567,14 @@
                         ocChart.update();
                     }
                 });
+            });
+            
+            // 新增：監聽 Multiple Plan Comparison 模式的 Defect Rate Max 輸入
+            planXAxisMaxInput.addEventListener('input', () => {
+                if (currentMode === 'plan') {
+                    updateChart();
+                    ocChart.update();
+                }
             });
             
             addPlanBtn.addEventListener('click', () => {
@@ -1711,6 +1747,10 @@
                         return;
                     }
                     updateReverseInputDisabledState();
+                    // 當有效的參數組合時自動查詢
+                    if (currentMode === 'reverse' && checked.length === 3) {
+                        setTimeout(() => { doReverseQuery(); }, 100);
+                    }
                 });
             });
 
@@ -1836,7 +1876,8 @@
                 });
                 reverseMathResultWrapper.innerHTML = html;
                 reverseSamplingPlans = plans.map(p => ({ ...p, distType: p.type }));
-                drawReverseOCChartMulti(reverseSamplingPlans);
+                // 不再自動顯示所有圖表，只有在點擊按鈕時才顯示
+                clearReverseOCChart();
 
                 document.querySelectorAll('.reverse-select-btn').forEach(btn => {
                     btn.onclick = function() {
@@ -1871,7 +1912,10 @@
                 ocChart.data.datasets = [];
                 const annotations = {};
 
-                plans.forEach((plan, idx) => {
+                // 如果指定了highlightIdx，只顯示該計畫；否則不顯示任何計畫
+                if (highlightIdx >= 0 && highlightIdx < plans.length) {
+                    const plan = plans[highlightIdx];
+                    const idx = highlightIdx;
                     let data = getOCData(plan, pValues);
                     
                     ocChart.data.datasets.push({
@@ -1897,21 +1941,20 @@
                             type: 'label',
                             xValue: aqlX,
                             yValue: plan.pa,
-                            backgroundColor: hexOrRgbaToRgba(colors[idx], (highlightIdx === idx) ? 0.9 : 0.2), //標籤的背景色
-                            color: (highlightIdx === idx) ? '#FFD700' : '#fff', //標籤的字體顏色
-                            font: { size: 12, weight: (highlightIdx === idx) ? 'bold' : 'normal' }, //標籤的字體大小與粗細
-                            content: (highlightIdx === idx) //標籤的內容
-                                ? `★ Plan${idx+1} (${aqlX.toFixed(2)}%, ${(plan.pa*100).toFixed(2)}%) ★` //標籤的內容
-                                : `Plan${idx+1} (${aqlX.toFixed(2)}%, ${(plan.pa*100).toFixed(2)}%)`, //標籤的內容
+                            backgroundColor: hexOrRgbaToRgba(colors[idx], 0.9), //標籤的背景色
+                            color: '#FFD700', //標籤的字體顏色
+                            font: { size: 12, weight: 'bold' }, //標籤的字體大小與粗細
+                            content: `★ Plan${idx+1} (${aqlX.toFixed(2)}%, ${(plan.pa*100).toFixed(2)}%) ★`, //標籤的內容
                             xAdjust: 100, //標籤的x軸偏移量
                             yAdjust: 0, //標籤的y軸偏移量
                             textAlign: 'left',
                             padding: {top: 6, right: 14, bottom: 6, left: 14} //標籤的內部間距
                         };
                     }
-                });
+                }
+                
                 ocChart.options.plugins.annotation.annotations = annotations;
-                ocChart.options.plugins.title.text = `OC Curve (Reverse Sampling Plan Query)`;
+                ocChart.options.plugins.title.text = highlightIdx >= 0 ? `OC Curve - Plan ${highlightIdx + 1} (Reverse Sampling Plan Query)` : 'OC Curve (Reverse Sampling Plan Query)';
                 ocChart.update();
             }
 
@@ -1932,8 +1975,13 @@
             reverseOcXAxisMaxInput.addEventListener('input', function() {
                 if (currentMode === 'reverse' && reverseSamplingPlans.length > 0) {
                     const highlightedButton = document.querySelector('.reverse-select-btn.highlighted');
-                    const highlightIdx = highlightedButton ? parseInt(highlightedButton.dataset.idx) : -1;
-                    drawReverseOCChartMulti(reverseSamplingPlans, highlightIdx);
+                    if (highlightedButton) {
+                        const highlightIdx = parseInt(highlightedButton.dataset.idx);
+                        drawReverseOCChartMulti(reverseSamplingPlans, highlightIdx);
+                    } else {
+                        // 如果沒有選擇任何計畫，則清空圖表
+                        clearReverseOCChart();
+                    }
                 }
             });
 
@@ -2163,13 +2211,19 @@
                     if (isNaN(vals.aql) || isNaN(vals.n) || isNaN(vals.N)) { validationError = true; reverseMathError.textContent = 'Please enter valid AQL, sample size (n), and lot size (N).'; }
                     else {
                         let c = 0, bestAbove = null, bestBelow = null;
-                        while (c < vals.n) {
+                        // 限制搜索範圍以提高效能：acceptance number 通常不會超過樣本數的20%或100（取較小者）
+                        const maxC = Math.min(vals.n, Math.max(100, Math.floor(vals.n * 0.2)));
+                        while (c <= maxC) {
                             const { pa, type } = calcPa(vals.n, c, vals.aql, vals.N);
                             if (!isNaN(pa)) {
                                 if (pa >= paTarget) { if (!bestAbove || Math.abs(pa - paTarget) < Math.abs(bestAbove.pa - paTarget)) bestAbove = { c, pa, type }; }
                                 else { if (!bestBelow || Math.abs(pa - paTarget) < Math.abs(bestBelow.pa - paTarget)) bestBelow = { c, pa, type }; }
                             }
                             c++;
+                            // 早期退出優化：如果已經找到合適的上下範圍結果，提早停止搜索
+                            if (bestAbove && bestBelow && Math.abs(bestAbove.pa - paTarget) < 0.01 && Math.abs(bestBelow.pa - paTarget) < 0.01) {
+                                break;
+                            }
                         }
                         if (bestAbove) plans.push({ ...vals, c: bestAbove.c, pa: bestAbove.pa, type: bestAbove.type });
                         if (bestBelow) plans.push({ ...vals, c: bestBelow.c, pa: bestBelow.pa, type: bestBelow.type });
@@ -2221,7 +2275,8 @@
                     });
                     reverseMathResultWrapper.innerHTML = html;
                     reverseSamplingPlans = plans.map(p => ({ ...p, distType: p.type }));
-                    drawReverseOCChartMulti(reverseSamplingPlans);
+                    // 不再自動顯示所有圖表，只有在點擊按鈕時才顯示
+                    clearReverseOCChart();
 
                     document.querySelectorAll('.reverse-select-btn').forEach(btn => {
                         btn.onclick = function() {
