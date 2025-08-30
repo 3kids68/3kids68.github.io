@@ -739,10 +739,6 @@
                             <label for="dist_c_input">Acceptance No. (c)</label>
                             <input type="number" id="dist_c_input" value="1" min="0">
                         </div>
-                        <div class="input-group">
-                            <label for="dist_x_axis_max_input">Defect Rate Max (%)</label>
-                            <input type="number" id="dist_x_axis_max_input" value="5" min="1" step="0.5">
-                        </div>
                     </div>
                     <div class="distribution-options">
                         <h4>Show Distribution Curves:</h4>
@@ -762,18 +758,18 @@
                 <!-- [新增] C=0 抽樣計畫控制面板 -->
                 <div id="c0-plan-controls" class="panel" style="display:none;">
                     <h3>C=0 Sampling Plan Lookup</h3>
+                    <div style="background: rgba(255,193,7,0.15); padding: 10px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffc107;">
+                        <small style="color: #ffc107; font-weight: bold;">ℹ️ Note:</small>
+                        <small style="color: #c7cacf; line-height: 1.4;">C=0 plans use Nicholas L. Squeglia's specialized standard, which may differ from ANSI/ASQ Z1.4 c=0 plans due to different design philosophies and risk assessment approaches.</small>
+                    </div>
                     <div class="input-grid" style="grid-template-columns: 1fr;">
                         <div class="input-group">
                             <label for="c0_lot_size_select">Lot Size Range</label>
                             <select id="c0_lot_size_select" style="text-align:center; text-align-last:center; margin:auto;"></select>
                         </div>
                         <div class="input-group" style="align-items:center;">
-                            <label for="c0_aql_select">AQL (%)</label>
-                            <select id="c0_aql_select" style="text-align:center; text-align-last:center; margin:auto;"></select>
-                        </div>
-                        <div class="input-group">
-                            <label for="c0_x_axis_max_input">Defect Rate Max (%)</label>
-                            <input type="number" id="c0_x_axis_max_input" value="8" min="1" step="0.5">
+                            <label for="c0_n_select">Sample Size (n)</label>
+                            <select id="c0_n_select" style="text-align:center; text-align-last:center; margin:auto;"></select>
                         </div>
                     </div>
                     <div id="c0-result" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; text-align: center; font-size: 1.2em; font-weight: bold; min-height: 2em;"></div>
@@ -821,10 +817,6 @@
                                 <label for="plan_label_input">Plan Label</label>
                                 <input type="text" id="plan_label_input" placeholder="e.g., Plan A">
                             </div>
-                            <div class="input-group">
-                                <label for="plan_x_axis_max_input">Defect Rate Max (%)</label>
-                                <input type="number" id="plan_x_axis_max_input" value="2" min="1" step="0.5">
-                            </div>
                         </div>
                         <div class="button-group">
                             <!-- [多計畫比較頁面] 新增計畫按鈕 -->
@@ -863,10 +855,6 @@
                             <label for="math_N_input">Lot Size (N)</label>
                             <input type="number" id="math_N_input" min="1" max="5000000" step="1" value="50000">
                         </div>
-                        <div class="input-group">
-                            <label for="reverse_oc_x_axis_max_input">Defect Rate Max (%)</label>
-                            <input type="number" id="reverse_oc_x_axis_max_input" value="2" min="1" max="100" step="0.5">
-                        </div>
                     </div>
                     <div style="color: #aaa; font-size: 0.95em;">Acceptance probability Pa is set at the closest to 95%, distribution type auto-detected - Producer's Risk (α) fixed at about 5%</div>
                     <div id="reverse-math-error" style="color: red; display: none;"></div>
@@ -875,13 +863,33 @@
             </div>
             
             <div class="chart-container">
-                <div class="export-btn-group">
+                <div class="export-btn-group" style="display:flex; align-items:center; gap:12px;">
                     <!-- [圖表區] 匯出 PNG 按鈕 -->
                     <button id="btn-export-png" class="main-btn">Export PNG</button>
                     <!-- /[圖表區] -->
                     <!-- [圖表區] 匯出 Data 按鈕 -->
                     <button id="btn-export-csv" class="main-btn">Export Data</button>
                     <!-- /[圖表區] -->
+                    <!-- [Distribution專用] Defect Rate Max 欄位 -->
+                    <div id="dist-defect-rate-control" style="display:none; margin-left:auto; align-items:center; gap:8px;">
+                        <label for="dist_x_axis_max_input" style="color:#c7cacf; font-size:0.9em; white-space:nowrap;">Defect Rate Max (%):</label>
+                        <input type="number" id="dist_x_axis_max_input" value="5" min="1" step="0.5" style="width:80px; padding:4px 8px; text-align:center; border:1px solid #647281; border-radius:4px; background:rgba(255,255,255,0.1); color:#c7cacf; font-size:0.9em;">
+                    </div>
+                    <!-- [Plan專用] Defect Rate Max 欄位 -->
+                    <div id="plan-defect-rate-control" style="display:none; margin-left:auto; align-items:center; gap:8px;">
+                        <label for="plan_x_axis_max_input" style="color:#c7cacf; font-size:0.9em; white-space:nowrap;">Defect Rate Max (%):</label>
+                        <input type="number" id="plan_x_axis_max_input" value="2" min="1" step="0.5" style="width:80px; padding:4px 8px; text-align:center; border:1px solid #647281; border-radius:4px; background:rgba(255,255,255,0.1); color:#c7cacf; font-size:0.9em;">
+                    </div>
+                    <!-- [Reverse專用] Defect Rate Max 欄位 -->
+                    <div id="reverse-defect-rate-control" style="display:none; margin-left:auto; align-items:center; gap:8px;">
+                        <label for="reverse_oc_x_axis_max_input" style="color:#c7cacf; font-size:0.9em; white-space:nowrap;">Defect Rate Max (%):</label>
+                        <input type="number" id="reverse_oc_x_axis_max_input" value="2" min="1" max="100" step="0.5" style="width:80px; padding:4px 8px; text-align:center; border:1px solid #647281; border-radius:4px; background:rgba(255,255,255,0.1); color:#c7cacf; font-size:0.9em;">
+                    </div>
+                    <!-- [C=0專用] Defect Rate Max 欄位 -->
+                    <div id="c0-defect-rate-control" style="display:none; margin-left:auto; align-items:center; gap:8px;">
+                        <label for="c0_x_axis_max_input" style="color:#c7cacf; font-size:0.9em; white-space:nowrap;">Defect Rate Max (%):</label>
+                        <input type="number" id="c0_x_axis_max_input" value="8" min="1" step="0.5" style="width:80px; padding:4px 8px; text-align:center; border:1px solid #647281; border-radius:4px; background:rgba(255,255,255,0.1); color:#c7cacf; font-size:0.9em;">
+                    </div>
                 </div>
                 <canvas id="ocChart"></canvas>
             </div>
@@ -1102,12 +1110,12 @@
         const C0_SAMPLING_TABLE = [
             {'lot_range': [2, 8], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': null, '0.15': null, '0.25': null, '0.40': null, '0.65': null, '1.0': null, '1.5': null, '2.5': 5, '4.0': 3, '6.5': 2, '10.0': 2}},
             {'lot_range': [9, 15], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': null, '0.15': null, '0.25': null, '0.40': null, '0.65': null, '1.0': 13, '1.5': 8, '2.5': 5, '4.0': 3, '6.5': 2, '10.0': 2}},
-            {'lot_range': [16, 25], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': null, '0.15': null, '0.25': null, '0.40': 20, '0.65': 13, '1.0': 13, '1.5': 8, '2.5': 5, '4.0': 3, '6.5': 3, '10.0': 2}},
+            {'lot_range': [16, 25], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': null, '0.15': null, '0.25': null, '0.40': null, '0.65': 20, '1.0': 13, '1.5': 8, '2.5': 5, '4.0': 3, '6.5': 3, '10.0': 2}},
             {'lot_range': [26, 50], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': null, '0.15': null, '0.25': null, '0.40': 32, '0.65': 20, '1.0': 13, '1.5': 8, '2.5': 5, '4.0': 5, '6.5': 5, '10.0': 3}},
-            {'lot_range': [51, 90], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': 80, '0.15': 50, '0.25': null, '0.40': 32, '0.65': 20, '1.0': 13, '1.5': 8, '2.5': 7, '4.0': 6, '6.5': 5, '10.0': 4}},
-            {'lot_range': [91, 150], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': 125, '0.10': 80, '0.15': 50, '0.25': 32, '0.40': 20, '0.65': 13, '1.0': 13, '1.5': 12, '2.5': 11, '4.0': 7, '6.5': 6, '10.0': 5}},
-            {'lot_range': [151, 280], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': 200, '0.065': 125, '0.10': 80, '0.15': 50, '0.25': 32, '0.40': 20, '0.65': 20, '1.0': 19, '1.5': 13, '2.5': 10, '4.0': 7, '6.5': 6, '10.0': 6}},
-            {'lot_range': [281, 500], 'samples': {'0.010': null, '0.015': null, '0.025': 315, '0.040': 200, '0.065': 125, '0.10': 80, '0.15': 50, '0.25': 48, '0.40': 47, '0.65': 29, '1.0': 21, '1.5': 16, '2.5': 11, '4.0': 9, '6.5': 7, '10.0': 7}},
+            {'lot_range': [51, 90], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': null, '0.15': 80, '0.25': 50, '0.40': 32, '0.65': 20, '1.0': 13, '1.5': 8, '2.5': 7, '4.0': 6, '6.5': 5, '10.0': 4}},
+            {'lot_range': [91, 150], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': null, '0.065': null, '0.10': 125, '0.15': 80, '0.25': 50, '0.40': 32, '0.65': 20, '1.0': 13, '1.5': 12, '2.5': 11, '4.0': 7, '6.5': 6, '10.0': 5}},
+            {'lot_range': [151, 280], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': 200, '0.065': 125, '0.10': 80, '0.15': 50, '0.25': 32, '0.40': 20, '0.65': 20, '1.0': 19, '1.5': 13, '2.5': 13, '4.0': 10, '6.5': 7, '10.0': 6}},
+            {'lot_range': [281, 500], 'samples': {'0.010': null, '0.015': null, '0.025': null, '0.040': 315, '0.065': 200, '0.10': 125, '0.15': 80, '0.25': 50, '0.40': 48, '0.65': 47, '1.0': 29, '1.5': 21, '2.5': 16, '4.0': 11, '6.5': 9, '10.0': 7}},
             {'lot_range': [501, 1200], 'samples': {'0.010': null, '0.015': 800, '0.025': 500, '0.040': 315, '0.065': 200, '0.10': 125, '0.15': 80, '0.25': 75, '0.40': 73, '0.65': 47, '1.0': 34, '1.5': 27, '2.5': 19, '4.0': 15, '6.5': 11, '10.0': 8}},
             {'lot_range': [1201, 3200], 'samples': {'0.010': 1250, '0.015': 800, '0.025': 500, '0.040': 315, '0.065': 200, '0.10': 125, '0.15': 120, '0.25': 116, '0.40': 73, '0.65': 53, '1.0': 42, '1.5': 35, '2.5': 23, '4.0': 18, '6.5': 13, '10.0': 9}},
             {'lot_range': [3201, 10000], 'samples': {'0.010': 1250, '0.015': 800, '0.025': 500, '0.040': 315, '0.065': 200, '0.10': 192, '0.15': 189, '0.25': 116, '0.40': 86, '0.65': 68, '1.0': 50, '1.5': 38, '2.5': 29, '4.0': 22, '6.5': 15, '10.0': 9}},
@@ -1117,7 +1125,95 @@
             {'lot_range': [500001, Infinity], 'samples': {'0.010': 1250, '0.015': 1200, '0.025': 1112, '0.040': 715, '0.065': 556, '0.10': 435, '0.15': 303, '0.25': 244, '0.40': 189, '0.65': 143, '1.0': 102, '1.5': 64, '2.5': 40, '4.0': 29, '6.5': 15, '10.0': 9}},
         ];
         
-        // [新增] C=0 抽樣計畫查詢函式
+        // [重新設計] C=0 抽樣計畫查詢結構 - 逆向查詢（先選n，再查AQL）
+        
+        // 第一步：建立逆向查詢表結構（從n查AQL）
+        function buildC0ReverseLookupTable() {
+            const lookupTable = new Map();
+            
+            // 為每個批量範圍建立對應的樣本數到AQL的對應關係
+            C0_SAMPLING_TABLE.forEach((row, rowIndex) => {
+                const [min, max] = row.lot_range;
+                const lotRangeKey = `${min}-${max === Infinity ? 'inf' : max}`;
+                
+                // 建立樣本數到AQL的對應
+                const sampleToAqlMap = new Map();
+                Object.entries(row.samples).forEach(([aql, sampleSize]) => {
+                    if (sampleSize !== null && sampleSize !== undefined) {
+                        if (!sampleToAqlMap.has(sampleSize)) {
+                            sampleToAqlMap.set(sampleSize, []);
+                        }
+                        sampleToAqlMap.get(sampleSize).push(aql);
+                    }
+                });
+                
+                // 提取所有有效的樣本數（排序）
+                const availableSampleSizes = Array.from(sampleToAqlMap.keys()).sort((a, b) => a - b);
+                
+                lookupTable.set(lotRangeKey, {
+                    lotRange: [min, max],
+                    sampleToAqlMap: sampleToAqlMap,
+                    availableSampleSizes: availableSampleSizes
+                });
+            });
+            
+            return lookupTable;
+        }
+        
+        // 第二步：逆向查詢函數（根據批量範圍和樣本數查找AQL）
+        function getC0AqlBySampleSize(lotSizeRange, sampleSize) {
+            const lookupTable = buildC0ReverseLookupTable();
+            
+            if (lotSizeRange && sampleSize) {
+                const [min, max] = lotSizeRange.split(',').map(Number);
+                const lotRangeKey = `${min}-${max === Infinity ? 'inf' : max}`;
+                
+                const tableData = lookupTable.get(lotRangeKey);
+                if (tableData && tableData.sampleToAqlMap.has(sampleSize)) {
+                    const aqls = tableData.sampleToAqlMap.get(sampleSize);
+                    // 如果有多個AQL對應同一個樣本數，返回最小的
+                    return aqls.sort((a, b) => parseFloat(a) - parseFloat(b))[0];
+                }
+            }
+            
+            return null;
+        }
+        
+        // 第三步：獲取批量範圍對應的有效樣本數
+        function getAvailableSampleSizes(lotSizeRange) {
+            const lookupTable = buildC0ReverseLookupTable();
+            
+            if (lotSizeRange) {
+                const [min, max] = lotSizeRange.split(',').map(Number);
+                const lotRangeKey = `${min}-${max === Infinity ? 'inf' : max}`;
+                
+                const tableData = lookupTable.get(lotRangeKey);
+                if (tableData) {
+                    return tableData.availableSampleSizes;
+                }
+            }
+            
+            // 如果沒有指定範圍，返回所有可能的樣本數
+            const allSampleSizes = new Set();
+            lookupTable.forEach(data => {
+                data.availableSampleSizes.forEach(size => allSampleSizes.add(size));
+            });
+            
+            return Array.from(allSampleSizes).sort((a, b) => a - b);
+        }
+        
+        
+        // [添加] 清理圖表函數
+        function clearReverseOCChart() {
+            if (ocChart) {
+                ocChart.data.datasets = [];
+                ocChart.options.plugins.annotation.annotations = {};
+                ocChart.options.plugins.title.text = '';
+                ocChart.update();
+            }
+        }
+        
+        // [修正] C=0 抽樣計畫查詢函式
         function get_c0_sample_size(lot_size, aql) {
             if (isNaN(lot_size) || lot_size < 2) {
                 return { error: "Lot size must be an integer greater than or equal to 2." };
@@ -1330,7 +1426,7 @@
             // [新增] C=0 DOM 元素
             const c0PlanControls = document.getElementById('c0-plan-controls');
             const c0LotSizeInput = document.getElementById('c0_lot_size_select');
-            const c0AqlSelect = document.getElementById('c0_aql_select');
+            const c0NSelect = document.getElementById('c0_n_select');
             const c0XAxisMaxInput = document.getElementById('c0_x_axis_max_input');
             const c0Result = document.getElementById('c0-result');
             const c0LqInfo = document.getElementById('c0-lq-info');
@@ -1419,6 +1515,11 @@
                 chartContainer.style.display = 'none';
                 contentWrapper.style.display = 'none';
                 kaiyiContainer.style.display = 'none';
+                // 隱藏所有Defect Rate Max控制項
+                document.getElementById('dist-defect-rate-control').style.display = 'none';
+                document.getElementById('plan-defect-rate-control').style.display = 'none';
+                document.getElementById('reverse-defect-rate-control').style.display = 'none';
+                document.getElementById('c0-defect-rate-control').style.display = 'none';
                 
                 // 清除所有圖表，確保模式切換時圖表也相應清除
                 clearReverseOCChart();
@@ -1429,12 +1530,16 @@
                     distributionControls.style.display = 'block';
                     chartContainer.style.display = 'block';
                     contentWrapper.style.display = 'flex';
+                    // 顯示Distribution模式的Defect Rate Max控制項
+                    document.getElementById('dist-defect-rate-control').style.display = 'flex';
                 } else if (newMode === 'plan') {
                     headerTitle.textContent = 'Comparison of Different Sampling Plans';
                     headerSubtitle.textContent = 'Interactive Analysis of Different Sampling Plans (using binomial distribution calculation)';
                     planControls.style.display = 'flex';
                     chartContainer.style.display = 'block';
                     contentWrapper.style.display = 'flex';
+                    // 顯示Plan模式的Defect Rate Max控制項
+                    document.getElementById('plan-defect-rate-control').style.display = 'flex';
                 } else if (newMode === 'kaiyi') {
                     headerTitle.textContent = 'Sampling Standard';
                     headerSubtitle.textContent = 'Sampling Standard (ANSI/ASQ Z1.4-2003)';
@@ -1445,6 +1550,8 @@
                     reverseControls.style.display = 'flex';
                     chartContainer.style.display = 'block';
                     contentWrapper.style.display = 'flex';
+                    // 顯示Reverse模式的Defect Rate Max控制項
+                    document.getElementById('reverse-defect-rate-control').style.display = 'flex';
                     updateReverseInputDisabledState();
                     clearReverseOCChart(); // 確保切換時清空圖表
                     // 自動觸發查詢以顯示預設值的結果
@@ -1455,6 +1562,8 @@
                     c0PlanControls.style.display = 'block';
                     chartContainer.style.display = 'block';
                     contentWrapper.style.display = 'flex';
+                    // 顯示C=0專用的Defect Rate Max控制項
+                    document.getElementById('c0-defect-rate-control').style.display = 'flex';
                     // 新增：自動根據現有輸入值查詢並重現圖表與結果
                     setTimeout(() => { doC0Query(); }, 0);
                 }
@@ -1597,16 +1706,16 @@
             clearAllBtn.addEventListener('click', () => { samplingPlans = []; planCounter = 1; updateChart(); ocChart.update(); });
             planList.addEventListener('click', (e) => { if (e.target.classList.contains('delete-btn')) { samplingPlans.splice(parseInt(e.target.dataset.index), 1); updateChart(); ocChart.update(); } });
 
-            // [新增] C=0 抽樣計畫互動邏輯
-            function populateAQLDropdown() {
-                const aqlSet = new Set();
-                C0_SAMPLING_TABLE.forEach(row => {
-                    Object.keys(row.samples).forEach(aql => aqlSet.add(aql));
-                });
-                const sortedAQLs = Array.from(aqlSet).sort((a, b) => parseFloat(a) - parseFloat(b));
+            // [重新設計] C=0 抽樣計畫互動邏輯 - 逆向查詢（先選n，再顯示AQL）
+            function populateNDropdown(lotSizeRange = null) {
+                const availableSampleSizes = getAvailableSampleSizes(lotSizeRange);
                 
-                c0AqlSelect.innerHTML = sortedAQLs.map(aql => `<option value="${aql}">${aql}%</option>`).join('');
-                c0AqlSelect.value = '1.5'; // 設定預設值
+                if (availableSampleSizes.length > 0) {
+                    c0NSelect.innerHTML = availableSampleSizes.map(n => `<option value="${n}">${n}</option>`).join('');
+                    c0NSelect.value = availableSampleSizes[0]; // 設定第一個可用值為預設值
+                } else {
+                    c0NSelect.innerHTML = '<option value="">-- No valid sample sizes --</option>';
+                }
             }
 
             function drawC0PlanChartWithLQ(plan, lq, beta) {
@@ -1673,47 +1782,59 @@
                     return `<option value="${min},${max}">${label}</option>`;
                 }).join('');
                 lotSizeSelect.selectedIndex = 10;
+                
+                // 監聽 lot size 選擇變更，更新 sample size 下拉選單
+                lotSizeSelect.addEventListener('change', function() {
+                    const selectedLotSizeRange = this.value;
+                    populateNDropdown(selectedLotSizeRange);
+                    // 自動觸發查詢
+                    doC0Query();
+                });
+                
+                // 初始化時也要更新 sample size 下拉選單
+                const initialLotSizeRange = lotSizeSelect.value;
+                populateNDropdown(initialLotSizeRange);
             }
             populateLotSizeDropdown();
 
-            // 修改查詢邏輯，取得選單區間的中位數作為lot_size
+            // [重新設計] 逆向查詢邏輯（從n查AQL）
             function doC0Query() {
                 c0Result.textContent = '';
                 c0Error.textContent = '';
                 c0LqInfo.textContent = '';
 
                 const lotSizeSelect = document.getElementById('c0_lot_size_select');
-                const [min, max] = lotSizeSelect.value.split(',').map(Number);
-                // 取中位數作為代表批量
-                const lotSize = (max === Infinity) ? min : Math.round((min + max) / 2);
-                const aql = c0AqlSelect.value;
+                const selectedLotSizeRange = lotSizeSelect.value;
+                const selectedN = parseInt(c0NSelect.value);
 
-                if (isNaN(lotSize)) {
-                    c0Error.textContent = 'Please select a valid lot size range.';
+                if (!selectedLotSizeRange || isNaN(selectedN)) {
+                    c0Error.textContent = 'Please select valid lot size range and sample size.';
                     clearReverseOCChart();
                     return;
                 }
 
-                const result = get_c0_sample_size(lotSize, aql);
+                // 使用逆向查詢找到對應的AQL
+                const foundAQL = getC0AqlBySampleSize(selectedLotSizeRange, selectedN);
 
-                if (result.error) {
-                    c0Error.textContent = result.error;
-                    clearReverseOCChart();
-                } else {
-                    c0Result.innerHTML = `Sampling Plan: <span style="color:#2ecc71">n=${result.n}, c=0, Re=1</span>`;
+                if (foundAQL) {
+                    c0Result.innerHTML = `<span style="color:#ffc107; font-size:1.3em; font-weight:bold;">AQL: ${foundAQL}%</span>`;
+                    
                     // 自動推算LQ（LTPD）
-                    let aqlVal = parseFloat(aql) / 100;
-                    let n = result.n;
+                    let aqlVal = parseFloat(foundAQL) / 100;
+                    let n = selectedN;
                     let lq = 2.3026 / n;
                     let lqPercent = (lq * 100).toFixed(2);
                     let lqAqlRatio = (lq / aqlVal).toFixed(2);
-                    c0LqInfo.innerHTML = `LTPD (LQ) for this plan: <b>${lqPercent}%</b> (about <b>${lqAqlRatio}</b> times AQL, consumer risk β=10%)`;
-                    drawC0PlanChartWithLQ(result, lq, 0.1);
+                    c0LqInfo.innerHTML = `Sampling Plan: <b>n=${selectedN}, c=0, Re=1</b><br>LTPD (LQ): <b>${lqPercent}%</b> (about <b>${lqAqlRatio}</b> times AQL, consumer risk β=10%)`;
+                    drawC0PlanChartWithLQ({n: selectedN, c: 0}, lq, 0.1);
+                } else {
+                    c0Error.textContent = `No valid AQL found for the selected lot size range and sample size ${selectedN}.`;
+                    clearReverseOCChart();
                 }
             }
 
             // 3. 所有input/select變動時都呼叫doC0Query
-            [c0LotSizeInput, c0AqlSelect, c0XAxisMaxInput].forEach(el => {
+            [c0LotSizeInput, c0NSelect, c0XAxisMaxInput].forEach(el => {
                 el.addEventListener('input', doC0Query);
                 el.addEventListener('change', doC0Query);
             });
@@ -1968,7 +2089,7 @@
 
             // --- 初始啟動 ---
             initializeChart();
-            populateAQLDropdown(); // [新增] 初始化C=0的AQL下拉選單
+            populateNDropdown(); // [新增] 初始化C=0的AQL下拉選單
             updateReverseInputDisabledState(); 
             switchMode('distribution');
 
@@ -2309,19 +2430,34 @@
                 const lotSizeSelect = c0LotSizeInput;
                 const [min, max] = lotSizeSelect.value.split(',').map(Number);
                 const lotSize = (max === Infinity) ? min : Math.round((min + max) / 2);
-                const aql = c0AqlSelect.value;
+                const selectedN = parseInt(c0NSelect.value);
                 const xAxisMax = c0XAxisMaxInput.value;
-                const result = get_c0_sample_size(lotSize, aql);
-                if (result && !result.error) {
-                    planNInput.value = result.n;
+                
+                // 找到對應的AQL
+                let foundAQL = null;
+                for (const row of C0_SAMPLING_TABLE) {
+                    const [rowMin, rowMax] = row.lot_range;
+                    if (lotSize >= rowMin && lotSize <= rowMax) {
+                        for (const [aql, n] of Object.entries(row.samples)) {
+                            if (n === selectedN) {
+                                foundAQL = aql;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                
+                if (foundAQL && !isNaN(selectedN)) {
+                    planNInput.value = selectedN;
                     planCInput.value = 0;
-                    planAqlInput.value = aql;
+                    planAqlInput.value = foundAQL;
                     planXAxisMaxInput.value = xAxisMax;
                     // 自動切換到多計畫比較模式
                     document.getElementById('mode-plan').checked = true;
                     switchMode('plan');
                 } else {
-                    alert('Unable to export current C=0 table parameters: ' + (result.error || 'Unknown error'));
+                    alert('Unable to export current C=0 table parameters: No valid plan found');
                 }
             });
 
@@ -2381,7 +2517,7 @@
 				'B': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 'down', '1.0': 'down', '1.5': 'down', '2.5': 'down', '4.0': 'down', '6.5': 0, '10': 'down', '15': 'down', '25': 1, '40': 2, '65': 3, '100': 5, '150': 8, '250': 12, '400': 18, '650': 27, '1000': 41 },
 				'C': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 'down', '1.0': 'down', '1.5': 'down', '2.5': 'down', '4.0': 0, '6.5': 'down', '10': 'down', '15': 1, '25': 2, '40': 3, '65': 5, '100': 8, '150': 12, '250': 18, '400': 27, '650': 41, '1000': 'up' },
 				'D': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 'down', '1.0': 'down', '1.5': 'down', '2.5': 0, '4.0': 'down', '6.5': 'down', '10': 1, '15': 2, '25': 3, '40': 5, '65': 8, '100': 12, '150': 18, '250': 27, '400': 41, '650': 'up', '1000': 'up' },
-				'E': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 'down', '1.0': 0, '1.5': 'up', '2.5': 1, '4.0': 'down', '6.5': 2, '10': 2, '15': 3, '25': 5, '40': 6, '65': 9, '100': 12, '150': 13, '250': 19, '400': 27, '650': 28, '1000': 41 },
+				'E': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 'down', '1.0': 'down', '1.5': 0, '2.5': 1, '4.0': 'down', '6.5': 1, '10': 2, '15': 3, '25': 5, '40': 8, '65': 12, '100': 18, '150': 27, '250': 41, '400': 'up', '650': 'up', '1000': 'up' },
 				'F': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 'down', '1.0': 0, '1.5': 'down', '2.5': 'down', '4.0': 1, '6.5': 2, '10': 3, '15': 5, '25': 8, '40': 12, '65': 18, '100': 'up', '150': 'up', '250': 'up', '400': 'up', '650': 'up', '1000': 'up' },
 				'G': { '0.010': 'down', '0.015': 'down', '0.015': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 'down', '0.65': 0, '1.0': 'down', '1.5': 'down', '2.5': 1, '4.0': 2, '6.5': 3, '10': 5, '15': 8, '25': 12, '40': 18, '65': 'up', '100': 'up', '150': 'up', '250': 'up', '400': 'up', '650': 'up', '1000': 'up' },
 				'H': { '0.010': 'down', '0.015': 'down', '0.025': 'down', '0.040': 'down', '0.065': 'down', '0.10': 'down', '0.15': 'down', '0.25': 'down', '0.40': 0, '0.65': 'down', '1.0': 'down', '1.5': 1, '2.5': 2, '4.0': 3, '6.5': 5, '10': 8, '15': 12, '25': 18, '40': 'up', '65': 'up', '100': 'up', '150': 'up', '250': 'up', '400': 'up', '650': 'up', '1000': 'up' },
